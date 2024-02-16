@@ -12,6 +12,6 @@ public class Member implements Comparable<Member> {
      */
     @Override
     public int compareTo(Member o) {
-        return 0;
+
     }
 }

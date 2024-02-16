@@ -32,5 +32,37 @@ public class Profile {
     public void setDob(Date date) {
         this.dob = date;
     }
-    
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Profile profile = (Profile) obj;
+        return fname.equals(profile.getFname()) && lname.equals(profile.getLname()) && dob.equals(profile.getDob());
+    }
+
+    @Override
+    public String toString() {
+        String result;
+        result = fname + " " + lname + ":" + dob.toString();
+        return result;
+    }
+
+    public int compareTo(Profile profile) {
+        int fnameComp = fname.compareTo(profile.getFname());
+        if (fnameComp != 0) {
+            return fnameComp;
+        }
+
+        int lnameComp = lname.compareTo(profile.getLname());
+        if (lnameComp != 0) {
+            return lnameComp;
+        }
+
+        return dob.compareTo(profile.dob);
+    }
 }
