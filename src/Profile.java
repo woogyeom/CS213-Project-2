@@ -1,8 +1,14 @@
-public class Profile implements Comparable<Profile> {
+public class Profile {
     private String fname;
     private String lname;
     private Date dob;
-
+    
+    public Profile(String fname, String lname, Date dob) {
+        this.fname = fname;
+        this.lname = lname;
+        this.dob = dob;
+    }
+    
     public String getFname() {
         return fname;
     }
@@ -28,36 +34,41 @@ public class Profile implements Comparable<Profile> {
     }
 
     @Override
+    public String toString() {
+        return fname + ":" + lname + ":" + dob;
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
         }
+
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
+
         Profile profile = (Profile) obj;
-        return fname.equals(profile.getFname()) && lname.equals(profile.getLname()) && dob.equals(profile.getDob());
+
+        if (this.getFname().equals(profile.getFname()) && this.getLname().equals(profile.getLname())) {
+            if (this.getDob().compareTo(profile.getDob()) == 0) {
+                return true;
+            }
+            return false;
+        }
+        return false;
     }
 
-    @Override
-    public String toString() {
-        String result;
-        result = fname + " " + lname + ":" + dob.toString();
-        return result;
-    }
-
-    @Override
     public int compareTo(Profile profile) {
-        int fnameComp = fname.compareTo(profile.getFname());
-        if (fnameComp != 0) {
-            return fnameComp;
+        if (this.getLname().compareToIgnoreCase(profile.getLname()) == 0) {
+            if (this.getFname().compareToIgnoreCase(profile.getFname()) == 0) {
+                if (this.getDob().compareTo(profile.getDob()) == 0) {
+                    return 0;
+                }
+                return this.getDob().compareTo(profile.getDob());
+            }
+            return this.getFname().compareToIgnoreCase(profile.getFname());
         }
-
-        int lnameComp = lname.compareTo(profile.getLname());
-        if (lnameComp != 0) {
-            return lnameComp;
-        }
-
-        return dob.compareTo(profile.dob);
+        return this.getLname().compareToIgnoreCase(profile.getLname());
     }
 }

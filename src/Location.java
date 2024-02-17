@@ -23,13 +23,11 @@ public enum Location {
         return zipcode;
     }
 
-    public String getCounty() {
+    public  String getCounty() {
         return county;
     }
 
-    public String toSrting() {
-        String result;
-        result = city + ", " + zipcode + ", " + county;
-        return result;
+    public String toString() {
+        return city.toUpperCase() + ", " + zipcode + ", " + county.toUpperCase();
     }
 }

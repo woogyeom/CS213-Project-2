@@ -3,57 +3,57 @@ public class Member implements Comparable<Member> {
     private Date expire;
     private Location homeStudio;
 
+    public Member(Profile profile, Date expire, Location homeStudio) {
+        this.profile = profile;
+        this.expire = expire;
+        this.homeStudio = homeStudio;
+    }
+
     public double bill() {
 
     }
 
-    public Profile getProfile() {
-        return profile;
-    }
-
-    public Date getExpire() {
-        return expire;
-    }
-
-    public Location getHomeStudio() {
-        return homeStudio;
+    @Override
+    public String toString() {
+        return profile.toString() + expire.toString() + ", Location: " + homeStudio.toString();
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
-        Member member = (Member) obj;
-
-        return profile.equals(member.getProfile()) && expire.equals(member.getExpire()) && homeStudio == member.getHomeStudio();
-    }
-
-    @Override
-    public String toString() {
-        String result;
-        result = profile.toString() + ", Membership expire " + expire.toString() + ", Location: " + homeStudio.toString();
-        return result;
-    }
+        Profile comparingProfile = (Profile) obj;
+        return profile.equals(comparingProfile);
+    } // Writeup said we could uniquely identify a member by profile, so I'm not sure if we need to check other fields
 
     /**
      * Compares this object with the specified object for order.
      */
     @Override
     public int compareTo(Member member) {
-        int profileComp = this.profile.compareTo(member.getProfile());
-        if (profileComp != 0) {
-            return profileComp;
+        return this.profile.compareTo(member.profile);
+    } //Again writeup said we could uniquely identify a member by profile, so I'm not sure if we need to check other fields to compare
+
+    public class Basic extends Member {
+        private int numClasses;
+        public Basic(Profile profile, Date expire, Location homeStudio, int numClasses) {
+            super(profile,  expire, homeStudio);
+            this.numClasses = numClasses;
         }
 
-        int expireComp = this.expire.compareTo(member.getExpire());
-        if (expireComp != 0) {
-            return expireComp;
-        }
+    }
 
-        return this.homeStudio.compareTo(member.getHomeStudio());
+    public class Family extends Member {
+        private boolean guest;
+        public Family(Profile profile, Date expire, Location homeStudio, boolean guest) {
+            super(profile,  expire, homeStudio);
+            this.guest = guest;
+        }
+    }
+
+    public class Premium extends Member {
+        private int guestPass;
+        public Premium(Profile profile, Date expire, Location homeStudio, int guestPass) {
+            super(profile,  expire, homeStudio);
+            this.guestPass = guestPass;
+        }
     }
 }
