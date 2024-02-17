@@ -26,4 +26,8 @@ public enum Location {
     public  String getCounty() {
         return county;
     }
+
+    public String toString() {
+        return city.toUpperCase() + ", " + zipcode + ", " + county.toUpperCase();
+    }
 }
