@@ -20,8 +20,14 @@ public class Member implements Comparable<Member> {
 
     @Override
     public boolean equals(Object obj) {
-        Profile comparingProfile = (Profile) obj;
-        return profile.equals(comparingProfile);
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Member comparingMember = (Member) obj;
+        return profile.equals(comparingMember.profile);
     } // Writeup said we could uniquely identify a member by profile, so I'm not sure if we need to check other fields
 
     /**
@@ -109,10 +115,7 @@ public class Member implements Comparable<Member> {
             Profile profile = (Profile) obj;
 
             if (this.getFname().equals(profile.getFname()) && this.getLname().equals(profile.getLname())) {
-                if (this.getDob().compareTo(profile.getDob()) == 0) {
-                    return true;
-                }
-                return false;
+                return this.getDob().compareTo(profile.getDob()) == 0;
             }
             return false;
         }
