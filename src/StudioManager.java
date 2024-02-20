@@ -1,17 +1,31 @@
+import java.io.File;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class StudioManager {
+    private MemberList memberList;
+    public StudioManager() {
+        this.memberList = new MemberList();
+    }
     public void run() {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Studio Manager is up running...");
+
+        File file = new File("memberList.txt");
+        try {
+            memberList.load(file);
+        } catch (IOException e) {
+            System.out.println("Error loading memberList.txt " + e.getMessage());
+        }
+
         while (true) {
             String input = scanner.nextLine();
             String[] tokens = input.split(" ");
 
             switch (tokens[0]) {
                 case "AB": // add a member with Basic membership
-                    addMember(tokens[1], tokens[2], stringToDate(tokens[3]), Location.valueOf(tokens[4].toUpperCase()));
+
                     break;
                 case "AF": // add a member with Family membership to the member database
 
@@ -63,13 +77,4 @@ public class StudioManager {
 
     }
 
-    private Date stringToDate(String string) throws IllegalArgumentException {
-        String[] tokens = string.split("/");
-
-        int year = Integer.parseInt(tokens[2]);
-        int month = Integer.parseInt(tokens[0]);
-        int day = Integer.parseInt(tokens[1]);
-
-        return new Date(month, day, year);
-    }
 }

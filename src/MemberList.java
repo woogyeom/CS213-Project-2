@@ -9,7 +9,7 @@ public class MemberList {
     private static final int NOT_FOUND = -1;
     private static final int INITIAL_CAPACITY = 4;
     private static final int GROWTH = 4;
-    private Member[] members;
+    private Member[] members = new Member[4];
     private int size;
 
     private int find(Member member) {
@@ -65,7 +65,7 @@ public class MemberList {
         Scanner scanner = new Scanner(file);
         while (scanner.hasNextLine()) {
             String data = scanner.nextLine();
-            String[] tokens = data.split(" +");
+            String[] tokens = data.split(" ");
 
             if (tokens.length != 6) {
                 throw new IllegalArgumentException("Expected 6 tokens, but found " + tokens.length);
@@ -89,7 +89,7 @@ public class MemberList {
             } else if (tokens[5].equalsIgnoreCase("Somerville")) {
                 location = Location.SOMERVILLE;
             } else {
-                throw new IllegalArgumentException("Invalid location token: "+ tokens[5]);
+                throw new IllegalArgumentException(tokens[5] + ": Invalid studio location!");
             }
 
             Profile profile = new Profile(tokens[1], tokens[2], birthDate);
@@ -101,7 +101,7 @@ public class MemberList {
                 Family newMember = new Family(profile, expirationDate, location);
                 add(newMember);
             } else {
-                Premium newMember = new Premium(profile,expirationDate, location, 3);
+                Premium newMember = new Premium(profile, expirationDate, location, 3);
                 add(newMember);
             }
 
