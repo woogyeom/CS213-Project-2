@@ -11,8 +11,8 @@ public class FitnessClass {
         this.instructor = instructor;
         this.studio = studio;
         this.time = time;
-        this.members = null;
-        this.guests = null;
+        this.members = new MemberList();
+        this.guests = new MemberList();
     }
 
     public Offer getClassInfo() {
