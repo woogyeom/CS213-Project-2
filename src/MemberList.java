@@ -65,7 +65,7 @@ public class MemberList {
         Scanner scanner = new Scanner(file);
         while (scanner.hasNextLine()) {
             String data = scanner.nextLine();
-            String[] tokens = data.split(" ");
+            String[] tokens = data.split(" +");
 
             if (tokens.length != 6) {
                 throw new IllegalArgumentException("Expected 6 tokens, but found " + tokens.length);
