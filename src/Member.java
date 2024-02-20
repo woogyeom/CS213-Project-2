@@ -11,7 +11,25 @@ public class Member implements Comparable<Member> {
     }
 
     public double bill() {
-
+        switch (this) {
+            case Basic membership -> {
+                int attended = membership.getNumClases();
+                double monthlyFee = membership.getMonthlyFee();
+                if (attended > membership.getMaxClasses()) {
+                    monthlyFee += EXTRA_CLASS_FEE * (attended - membership.getMaxClasses());
+                }
+                return monthlyFee;
+            }
+            case Family membership -> {
+                return membership.getMonthlyFee();
+            }
+            case Premium membership -> {
+                return membership.getMonthlyFee();
+            }
+            default -> {
+                return 0.0;
+            }
+        }
     }
 
     public Profile getProfile() {
@@ -54,29 +72,33 @@ public class Member implements Comparable<Member> {
         private static final double MONTHLY_FEE = 39.99;
         private static final int BILLING_INTERVAL = 1;
         private static final int MAX_CLASSES = 4;
+        private int numClases;
         public Basic(Profile profile, Date expire, Location homeStudio) {
             super(profile, expire, homeStudio);
-
         }
 
         public double getMonthlyFee() {
             return MONTHLY_FEE;
         }
-
         public int getBillingInterval() {
             return BILLING_INTERVAL;
         }
-
         public int getMaxClasses() {
             return MAX_CLASSES;
         }
-
+        public int getNumClases() {
+            return numClases;
+        }
+        public void setNumClases(int n) {
+            numClases = n;
+        }
     }
 
     public class Family extends Member {
         private static final double MONTHLY_FEE = 49.99;
         private static final int BILLING_INTERVAL = 3;
         private static final int MAX_CLASSES = Integer.MAX_VALUE;
+        private boolean guest = true;
         public Family(Profile profile, Date expire, Location homeStudio) {
             super(profile, expire, homeStudio);
         }
@@ -84,13 +106,17 @@ public class Member implements Comparable<Member> {
         public double getMonthlyFee() {
             return MONTHLY_FEE;
         }
-
         public int getBillingInterval() {
             return BILLING_INTERVAL;
         }
-
         public int getMaxClasses() {
             return MAX_CLASSES;
+        }
+        public boolean getGuest() {
+            return guest;
+        }
+        public void setGuest(boolean bool) {
+            guest = bool;
         }
     }
 
@@ -98,6 +124,7 @@ public class Member implements Comparable<Member> {
         private static final double MONTHLY_FEE = 59.99;
         private static final int BILLING_INTERVAL = 12;
         private static final int MAX_CLASSES = Integer.MAX_VALUE;
+        private int guestPass;
         public Premium(Profile profile, Date expire, Location homeStudio, int guestPass) {
             super(profile, expire, homeStudio);
         }
@@ -105,85 +132,17 @@ public class Member implements Comparable<Member> {
         public double getMonthlyFee() {
             return MONTHLY_FEE;
         }
-
         public int getBillingInterval() {
             return BILLING_INTERVAL;
         }
-
         public int getMaxClasses() {
             return MAX_CLASSES;
         }
-    }
-
-    public class Profile implements Comparable<Profile> {
-        private String fname;
-        private String lname;
-        private Date dob;
-
-        public Profile(String fname, String lname, Date dob) {
-            this.fname = fname;
-            this.lname = lname;
-            this.dob = dob;
+        public int getGuestPass() {
+            return guestPass;
         }
-
-        public String getFname() {
-            return fname;
-        }
-
-        public void setFname(String fname) {
-            this.fname = fname;
-        }
-
-        public String getLname() {
-            return lname;
-        }
-
-        public void setLname(String lname) {
-            this.lname = lname;
-        }
-
-        public Date getDob() {
-            return dob;
-        }
-
-        public void setDob(Date date) {
-            this.dob = date;
-        }
-
-        @Override
-        public String toString() {
-            return fname + ":" + lname + ":" + dob;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj) {
-                return true;
-            }
-
-            if (obj == null || getClass() != obj.getClass()) {
-                return false;
-            }
-
-            Profile profile = (Profile) obj;
-
-            if (this.getFname().equals(profile.getFname()) && this.getLname().equals(profile.getLname())) {
-                return this.getDob().compareTo(profile.getDob()) == 0;
-            }
-            return false;
-        }
-
-        public int compareTo(Profile profile) {
-            if (this.getLname().compareToIgnoreCase(profile.getLname()) == 0) {
-                if (this.getFname().compareToIgnoreCase(profile.getFname()) == 0) {
-                    if (this.getDob().compareTo(profile.getDob()) == 0) {
-                        return 0;
-                    }
-                    return this.getDob().compareTo(profile.getDob());
-                }
-                return this.getFname().compareToIgnoreCase(profile.getFname());
-            }
-            return this.getLname().compareToIgnoreCase(profile.getLname());
+        public void setGuestPass(int n) {
+            guestPass = n;
         }
     }
 }

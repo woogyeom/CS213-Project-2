@@ -1,9 +1,9 @@
 public enum Location {
-    BRIDGEWATER("Bridgewater", "08807", "Somerset County"),
-    EDISON("Edison", "08837", "Middlesex County"),
-    FRANKLIN("Franklin", "08873", "Somerset County"),
-    PISCATAWAY("Piscataway", "08854", "Middlesex County"),
-    SOMERVILLE("Somerville", "08876", "Somerset County");
+    BRIDGEWATER("BRIDGEWATER", "08807", "Somerset County"),
+    EDISON("EDISON", "08837", "Middlesex County"),
+    FRANKLIN("FRANKLIN", "08873", "Somerset County"),
+    PISCATAWAY("PISCATAWAY", "08854", "Middlesex County"),
+    SOMERVILLE("SOMERVILLE", "08876", "Somerset County");
 
     private final String city;
     private final String zipcode;
@@ -28,6 +28,6 @@ public enum Location {
     }
 
     public String toString() {
-        return city.toUpperCase() + ", " + zipcode + ", " + county.toUpperCase();
+        return city + ", " + zipcode + ", " + county.toUpperCase();
     }
 }

@@ -11,7 +11,7 @@ public class StudioManager {
 
             switch (tokens[0]) {
                 case "AB": // add a member with Basic membership
-
+                    addMember(tokens[1], tokens[2], stringToDate(tokens[3]), Location.valueOf(tokens[4].toUpperCase()));
                     break;
                 case "AF": // add a member with Family membership to the member database
 
@@ -56,5 +56,20 @@ public class StudioManager {
                     break;
             }
         }
+    }
+
+    private void addMember(String fname, String lname, Date dob, Location homeStudio) {
+        Profile profile = new Profile(fname, lname, dob);
+
+    }
+
+    private Date stringToDate(String string) throws IllegalArgumentException {
+        String[] tokens = string.split("/");
+
+        int year = Integer.parseInt(tokens[2]);
+        int month = Integer.parseInt(tokens[0]);
+        int day = Integer.parseInt(tokens[1]);
+
+        return new Date(month, day, year);
     }
 }
