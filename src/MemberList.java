@@ -3,6 +3,7 @@ import java.io.IOError;
 import java.io.IOException;
 import java.util.StringTokenizer;
 import java.util.Scanner;
+import java.util.Calendar;
 
 public class MemberList {
     private static final int NOT_FOUND = -1;
@@ -118,14 +119,105 @@ public class MemberList {
     }
 
     public void printByCounty() {
+        for (int i = 0; i < size - 1; i++) {
+            int minIndex = i;
+            for (int j = i + 1; j < size; j++) {
+                if (members[j].getHomeStudio().getCounty().compareTo(members[minIndex].getHomeStudio().getCounty()) < 0) {
+                    minIndex = j;
+                } else if (members[j].getHomeStudio().getCounty().compareTo(members[minIndex].getHomeStudio().getCounty()) == 0) {
+                    if (members[j].getHomeStudio().getZipcode().compareTo(members[minIndex].getHomeStudio().getZipcode()) < 0) {
+                        minIndex = j;
+                    }
+                }
+            }
+
+            Member temp = members[minIndex];
+            members[minIndex] = members[i];
+            members[i] = temp;
+        }
+
+        if (size == 0) {
+            System.out.println("Members List is empty!");
+        } else {
+            System.out.println("-list of members sorted by county-");
+            for (Member member : members) {
+                if (member != null) {
+                    System.out.println(member);
+                }
+            }
+            System.out.println("-end of list-");
+        }
 
     }
 
     public void printByMember() {
+        for (int i = 0; i < size - 1; i++) {
+            int minIndex = i;
+            for (int j = i + 1; j < size; j++) {
+                if (members[j].getProfile().compareTo(members[minIndex].getProfile()) < 0) {
+                    minIndex = j;
+                }
+            }
 
+            Member temp = members[minIndex];
+            members[minIndex] = members[i];
+            members[i] = temp;
+        }
+
+        if (size == 0) {
+            System.out.println("Members List is empty!");
+        } else {
+            System.out.println("-list of members sorted by member profiles-");
+            for (Member member : members) {
+                if (member != null) {
+                    System.out.println(member);
+                }
+            }
+            System.out.println("-end of list-");
+        }
     }
 
     public void printFees() {
+        String todayDate = getTodayDate();
+        Date today = stringToDate(todayDate);
 
+        for (Member member : members) {
+            boolean isExpired = expired(member, today);
+
+            if (member instanceof Basic) {
+                System.out.println(member + ", (Basic) number of classes attended: " + ((Basic) member).getNumClases() + " [next due: $" + member.bill() + "]");
+            }
+            if (member instanceof Family) {
+                if (isExpired) {
+                    System.out.println(member + ", (Family) guest-pass remaining: not eligible [next due: $" + member.bill() + "]");
+                } else {
+                    if (((Family) member).getGuest()) {
+                        System.out.println(member + ", (Family) guest-pass remaining: 1 [next due: $" + member.bill() + "]");
+                    } else {
+                        System.out.println(member + ", (Family) guest-pass remaining: 0 [next due: $" + member.bill() + "]");
+                    }
+                }
+            }
+            if (member instanceof Premium) {
+                if (isExpired) {
+                    System.out.println(member + ", (Premium) guest-pass remaining: not eligible [next due: $" + member.bill() + "]");
+                } else {
+                    System.out.println(member + ", (Premium) guest-pass remaining: " + ((Premium) member).getGuestPass() + " [next due: $" + member.bill() + "]");
+                }
+            }
+        }
+        System.out.println("-end of list-");
+    }
+
+    private String getTodayDate() {
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        return (month+1) + "/" + day + "/" + year;
+    }
+
+    private boolean expired(Member member, Date today) {
+        return member.getExpire().compareTo(today) < 0;
     }
 }
