@@ -1,9 +1,9 @@
 public enum Location {
-    BRIDGEWATER("BRIDGEWATER", "08807", "Somerset County"),
-    EDISON("EDISON", "08837", "Middlesex County"),
-    FRANKLIN("FRANKLIN", "08873", "Somerset County"),
-    PISCATAWAY("PISCATAWAY", "08854", "Middlesex County"),
-    SOMERVILLE("SOMERVILLE", "08876", "Somerset County");
+    BRIDGEWATER("BRIDGEWATER", "08807", "Somerset"),
+    EDISON("EDISON", "08837", "Middlesex"),
+    FRANKLIN("FRANKLIN", "08873", "Somerset"),
+    PISCATAWAY("PISCATAWAY", "08854", "Middlesex"),
+    SOMERVILLE("SOMERVILLE", "08876", "Somerset");
 
     private final String city;
     private final String zipcode;

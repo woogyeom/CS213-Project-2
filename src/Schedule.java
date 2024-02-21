@@ -8,47 +8,36 @@ public class Schedule {
     private FitnessClass[] classes = new FitnessClass[4];
     private int numClasses;
     public void load(File file) throws IOException {
+        System.out.println("-Fitness classes loaded-");
+
         Scanner scanner = new Scanner(file);
+
         while (scanner.hasNextLine()) {
             String data = scanner.nextLine();
+            if (data.trim().isEmpty()) {
+                continue;
+            }
+
             String[] tokens = data.split(" +");
 
-            if (tokens.length != 4) {
-                throw new IllegalArgumentException("Expected 4 tokens, but found " + tokens.length);
-            }
-
             Offer offer;
-            try {
-                offer = Offer.valueOf(tokens[0]);
-            } catch (IllegalArgumentException e) {
-                // Handle the case where tokens[0] does not match any Offer enum constant
-                throw new IllegalArgumentException("The token " + tokens[0] + " is not a valid Offer.", e);
-            }
+            offer = Offer.valueOf(tokens[0].toUpperCase());
 
             Instructor instructor;
-            try {
-                instructor = Instructor.valueOf(tokens[1]);
-            } catch (IllegalArgumentException e) {
-                throw new IllegalArgumentException("The token " + tokens[1] + " is not a valid instructor", e);
-            }
+            instructor = Instructor.valueOf(tokens[1].toUpperCase());
 
             Time time;
-            try {
-                time = Time.valueOf(tokens[2].toUpperCase());
-            } catch (IllegalArgumentException e) {
-                throw new IllegalArgumentException("The token " + tokens[2] + " is not a valid time", e);
-            }
+            time = Time.valueOf(tokens[2].toUpperCase());
 
             Location homeStudio;
-            try {
-                homeStudio = Location.valueOf(tokens[3].toUpperCase());
-            } catch (IllegalArgumentException e) {
-                throw new IllegalArgumentException("The token " + tokens[3] + " is not a valid city.", e);
-            }
+            homeStudio = Location.valueOf(tokens[3].toUpperCase());
 
             FitnessClass lesson = new FitnessClass(offer, instructor, homeStudio, time);
             add(lesson);
+            System.out.println(lesson);
         }
+
+        System.out.println("-end of class list.");
 
     }
 
@@ -67,5 +56,22 @@ public class Schedule {
 
         classes[numClasses] = lesson;
         numClasses++;
+    }
+
+    public int getNumClasses() {
+        return numClasses;
+    }
+
+    public FitnessClass[] getClasses() {
+        return classes;
+    }
+    public FitnessClass find(Offer classInfo, Instructor instructor, Location studio) {
+        FitnessClass fitnessClass = new FitnessClass(classInfo, instructor, studio, null);
+        for (int i = 0; i < numClasses; i++) {
+            if (classes[i].equals(fitnessClass)) {
+                return classes[i];
+            }
+        }
+        return null;
     }
 }

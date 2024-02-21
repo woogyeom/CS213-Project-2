@@ -3,8 +3,9 @@ public class Premium extends Member {
     private static final int BILLING_INTERVAL = 12;
     private static final int MAX_CLASSES = Integer.MAX_VALUE;
     private int guestPass;
-    public Premium(Profile profile, Date expire, Location homeStudio, int guestPass) {
+    public Premium(Profile profile, Date expire, Location homeStudio) {
         super(profile, expire, homeStudio);
+        this.guestPass = 3;
     }
 
     public double getMonthlyFee() {
@@ -21,5 +22,8 @@ public class Premium extends Member {
     }
     public void setGuestPass(int n) {
         guestPass = n;
+    }
+    public double bill() {
+        return MONTHLY_FEE * BILLING_INTERVAL - MONTHLY_FEE;
     }
 }

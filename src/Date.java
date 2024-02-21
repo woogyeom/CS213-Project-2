@@ -94,22 +94,13 @@ public class Date implements Comparable<Date> {
      * @return true if this date is valid, false otherwise.
      */
     public boolean isValid() {
-        if (year < 1900) {
-            return false;
-        }
         if (month < 1 || month > 12) {
             return false;
         }
 
-        Calendar today = Calendar.getInstance();
-
         Calendar input = Calendar.getInstance();
         input.setLenient(false); // only valid calendar date
         input.set(year, month - 1, day);
-
-        if (input.after(today)) {
-            return false; // today or a future date
-        }
 
         try {
             input.getTime();
@@ -118,6 +109,78 @@ public class Date implements Comparable<Date> {
             return false; // not a valid calendar date
         }
     }
+
+    public boolean isUnderage() {
+        Calendar today = Calendar.getInstance();
+        int currentMonth = today.get(Calendar.MONTH) + 1;
+        int currentYear = today.get(Calendar.YEAR);
+
+        if (currentYear - year < 18) {
+            return true;
+        } else if (currentYear - year == 18 && month > currentMonth) {
+            return true;
+        }
+
+        return false;
+    }
+
+
+    public boolean isExpired() {
+        Calendar today = Calendar.getInstance();
+
+        Calendar input = Calendar.getInstance();
+        input.set(year, month - 1, day);
+        return input.before(today);
+    }
+
+    public static Date getExpirationDate(String string) {
+        Calendar today = Calendar.getInstance();
+        int year = today.get(Calendar.YEAR);
+        int month = today.get(Calendar.MONTH) + 1;
+        int day = today.get(Calendar.DAY_OF_MONTH);
+
+        switch (string) {
+            case "B":
+                month += 1;
+                if (month > 12) {
+                    month = 1;
+                    year += 1;
+                }
+                int maxDay = getMaxDayOfMonth(year, month);
+                day = Math.min(day, maxDay);
+                break;
+            case "F":
+                month += 3;
+                if (month > 12) {
+                    month = 1;
+                    year += 1;
+                }
+                maxDay = getMaxDayOfMonth(year, month);
+                day = Math.min(day, maxDay);
+                break;
+            case "P":
+                year += 1;
+                maxDay = getMaxDayOfMonth(year, month);
+                day = Math.min(day, maxDay);
+                break;
+        }
+
+        return new Date(month, day, year);
+    }
+
+    private static int getMaxDayOfMonth(int year, int month) {
+        return switch (month) {
+            case 1, 3, 5, 7, 8, 10, 12 -> 31;
+            case 4, 6, 9, 11 -> 30;
+            case 2 -> isLeapYear(year) ? 29 : 28;
+            default -> 0;
+        };
+    }
+
+    private static boolean isLeapYear(int year) {
+        return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+    }
+
 
     /**
      * Compares this Date object with another Date object for order.

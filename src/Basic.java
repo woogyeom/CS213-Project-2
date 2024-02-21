@@ -22,4 +22,13 @@ public class Basic extends Member {
     public void setNumClases(int n) {
         numClases = n;
     }
+
+    @Override
+    public double bill() {
+        double monthlyFee = MONTHLY_FEE;
+        if (numClases > MAX_CLASSES) {
+            monthlyFee += 10.0 * (numClases - MAX_CLASSES);
+        }
+        return monthlyFee;
+    }
 }

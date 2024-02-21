@@ -18,4 +18,11 @@ public enum Time {
     public int getMinute() {
         return minute;
     }
+
+    public String toString() {
+        String strHour = String.valueOf(hour);
+        String strMinute = String.format("%02d", minute);
+
+        return strHour + ":" + strMinute;
+    }
 }

@@ -1,7 +1,5 @@
 import java.io.File;
-import java.io.IOError;
 import java.io.IOException;
-import java.util.StringTokenizer;
 import java.util.Scanner;
 import java.util.Calendar;
 
@@ -9,10 +7,15 @@ public class MemberList {
     private static final int NOT_FOUND = -1;
     private static final int INITIAL_CAPACITY = 4;
     private static final int GROWTH = 4;
-    private Member[] members = new Member[4];
+    private Member[] members;
     private int size;
 
-    private int find(Member member) {
+    public MemberList() {
+        members = new Member[INITIAL_CAPACITY];
+        size = 0;
+    }
+
+    public int find(Member member) {
         for (int i = 0; i < size; i++) {
             if (members[i].getProfile().compareTo(member.getProfile()) == 0) {
                 return i;
@@ -61,10 +64,14 @@ public class MemberList {
     }
 
     public void load(File file) throws IOException {
-        //file = new File("memberList.txt");
+        System.out.println("-list of members loaded-");
+
         Scanner scanner = new Scanner(file);
         while (scanner.hasNextLine()) {
             String data = scanner.nextLine();
+            if (data.trim().isEmpty()) {
+                continue;
+            }
             String[] tokens = data.split(" +");
 
             if (tokens.length != 6) {
@@ -93,19 +100,30 @@ public class MemberList {
             }
 
             Profile profile = new Profile(tokens[1], tokens[2], birthDate);
+            Member newMember;
 
             if (tokens[0].equalsIgnoreCase("B")) {
-                Basic newMember = new Basic(profile, expirationDate, location);
+                newMember = new Basic(profile, expirationDate, location);
                 add(newMember);
             } else if (tokens[0].equalsIgnoreCase("F")) {
-                Family newMember = new Family(profile, expirationDate, location);
+                newMember = new Family(profile, expirationDate, location);
+                if (expirationDate.isExpired()) { // Check if member is expired or not
+                    ((Family) newMember).setGuest(false);
+                }
                 add(newMember);
             } else {
-                Premium newMember = new Premium(profile, expirationDate, location, 3);
+                newMember = new Premium(profile, expirationDate, location);
+                if (expirationDate.isExpired()) { // Check if member is expired or not
+                    ((Premium) newMember).setGuestPass(0);
+                }
                 add(newMember);
             }
 
+            System.out.println(newMember.toString());
+
         }
+
+        System.out.println("-end of list-");
     }
 
     private Date stringToDate(String string) throws IllegalArgumentException {
@@ -139,18 +157,16 @@ public class MemberList {
         if (size == 0) {
             System.out.println("Members List is empty!");
         } else {
-            System.out.println("-list of members sorted by county-");
             for (Member member : members) {
                 if (member != null) {
                     System.out.println(member);
                 }
             }
-            System.out.println("-end of list-");
         }
 
     }
 
-    public void printByMember() {
+    public void printByMember(boolean sCommand) { // We need this sCommand boolean otherwise we need one more method
         for (int i = 0; i < size - 1; i++) {
             int minIndex = i;
             for (int j = i + 1; j < size; j++) {
@@ -167,13 +183,14 @@ public class MemberList {
         if (size == 0) {
             System.out.println("Members List is empty!");
         } else {
-            System.out.println("-list of members sorted by member profiles-");
             for (Member member : members) {
                 if (member != null) {
+                    if (sCommand) { // Please keep this line as we need to indent each line in the result for "S" command.
+                        System.out.print("   ");
+                    }
                     System.out.println(member);
                 }
             }
-            System.out.println("-end of list-");
         }
     }
 
@@ -206,7 +223,6 @@ public class MemberList {
                 }
             }
         }
-        System.out.println("-end of list-");
     }
 
     private String getTodayDate() {
@@ -220,4 +236,17 @@ public class MemberList {
     private boolean expired(Member member, Date today) {
         return member.getExpire().compareTo(today) < 0;
     }
+
+    public Member getMember(int i) {
+        return members[i];
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
 }

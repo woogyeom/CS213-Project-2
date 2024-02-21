@@ -2,7 +2,6 @@ public class Member implements Comparable<Member> {
     private Profile profile;
     private Date expire;
     private Location homeStudio;
-    private final double EXTRA_CLASS_FEE = 10.0;
 
     public Member(Profile profile, Date expire, Location homeStudio) {
         this.profile = profile;
@@ -11,25 +10,7 @@ public class Member implements Comparable<Member> {
     }
 
     public double bill() {
-        switch (this) {
-            case Basic membership -> {
-                int attended = membership.getNumClases();
-                double monthlyFee = membership.getMonthlyFee();
-                if (attended > membership.getMaxClasses()) {
-                    monthlyFee += EXTRA_CLASS_FEE * (attended - membership.getMaxClasses());
-                }
-                return monthlyFee;
-            }
-            case Family membership -> {
-                return membership.getMonthlyFee();
-            }
-            case Premium membership -> {
-                return membership.getMonthlyFee();
-            }
-            default -> {
-                return 0.0;
-            }
-        }
+        return 0.0;
     }
 
     public Profile getProfile() {
@@ -46,7 +27,29 @@ public class Member implements Comparable<Member> {
 
     @Override
     public String toString() {
-        return profile.toString() + expire.toString() + ", Location: " + homeStudio.toString();
+        String expireStatus = expire.isExpired() ? "Membership expired " + expire.toString() : "Membership expires " + expire.toString();
+        String memberShip = null;
+        switch (this) {
+            case Basic basic -> memberShip = "(Basic) number of classes attended: " + basic.getNumClases();
+            case Family family -> {
+                if (family.expired()) {
+                    memberShip = "(Family) guest-pass remaining: not eligible";
+                } else if (family.getGuest()) {
+                    memberShip = "(Family) guest-pass remaining: 1";
+                } else {
+                    memberShip = "(Family) guest-pass remaining: 0";
+                }
+            }
+            case Premium premium -> {
+                if (!premium.expired()) {
+                    memberShip = "(Premium) guest-pass remaining: " + premium.getGuestPass();
+                } else {
+                    memberShip = "(Premium) guest-pass remaining: not eligible";
+                }
+            }
+            default -> {}
+        }
+        return profile.toString() + ", " + expireStatus + ", Home Studio: " + homeStudio.toString() + ", " + memberShip;
     }
 
     @Override
@@ -67,4 +70,8 @@ public class Member implements Comparable<Member> {
     public int compareTo(Member member) {
         return this.profile.compareTo(member.profile);
     } //Again writeup said we could uniquely identify a member by profile, so I'm not sure if we need to check other fields to compare
+
+    public boolean expired() {
+        return expire.isExpired();
+    }
 }

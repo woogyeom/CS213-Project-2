@@ -1,5 +1,5 @@
 public enum Offer {
-    Pilates,
-    Spinning,
-    Cardio
+    PILATES,
+    SPINNING,
+    CARDIO
 }

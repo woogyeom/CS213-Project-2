@@ -22,4 +22,8 @@ public class Family extends Member {
     public void setGuest(boolean bool) {
         guest = bool;
     }
+
+    public double bill() {
+        return MONTHLY_FEE * BILLING_INTERVAL;
+    }
 }

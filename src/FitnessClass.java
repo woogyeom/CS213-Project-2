@@ -62,4 +62,37 @@ public class FitnessClass {
     public void setGuests(MemberList guests) {
         this.guests = guests;
     }
+
+    public void addMember(Member member) {
+        members.add(member);
+    }
+
+    public void removeMember(Member member) {
+        members.remove(member);
+    }
+    public void addGuest(Member guest) {
+        guests.add(guest);
+    }
+
+    public void removeGuest(Member guest) {
+        guests.remove(guest);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        FitnessClass other = (FitnessClass) obj;
+        return this.classInfo == other.classInfo &&
+                this.instructor == other.instructor &&
+                this.studio == other.studio;
+    }
+    @Override
+    public String toString() {
+        return classInfo.toString().toUpperCase() + " - " + instructor.toString().toUpperCase() + ", " + time.toString() + ", " + studio.getCity().toUpperCase();
+    }
 }
