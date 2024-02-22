@@ -199,27 +199,30 @@ public class MemberList {
         Date today = stringToDate(todayDate);
 
         for (Member member : members) {
-            boolean isExpired = expired(member, today);
 
-            if (member instanceof Basic) {
-                System.out.println(member + ", (Basic) number of classes attended: " + ((Basic) member).getNumClases() + " [next due: $" + member.bill() + "]");
-            }
-            if (member instanceof Family) {
-                if (isExpired) {
-                    System.out.println(member + ", (Family) guest-pass remaining: not eligible [next due: $" + member.bill() + "]");
-                } else {
-                    if (((Family) member).getGuest()) {
-                        System.out.println(member + ", (Family) guest-pass remaining: 1 [next due: $" + member.bill() + "]");
+            if (member != null) {
+                boolean isExpired = expired(member, today);
+
+                if (member instanceof Basic) {
+                    System.out.println(member + " [next due: $" + member.bill() + "]");
+                }
+                if (member instanceof Family) {
+                    if (isExpired) {
+                        System.out.println(member + " [next due: $" + member.bill() + "]");
                     } else {
-                        System.out.println(member + ", (Family) guest-pass remaining: 0 [next due: $" + member.bill() + "]");
+                        if (((Family) member).getGuest()) {
+                            System.out.println(member + " [next due: $" + member.bill() + "]");
+                        } else {
+                            System.out.println(member + " [next due: $" + member.bill() + "]");
+                        }
                     }
                 }
-            }
-            if (member instanceof Premium) {
-                if (isExpired) {
-                    System.out.println(member + ", (Premium) guest-pass remaining: not eligible [next due: $" + member.bill() + "]");
-                } else {
-                    System.out.println(member + ", (Premium) guest-pass remaining: " + ((Premium) member).getGuestPass() + " [next due: $" + member.bill() + "]");
+                if (member instanceof Premium) {
+                    if (isExpired) {
+                        System.out.println(member + " [next due: $" + member.bill() + "]");
+                    } else {
+                        System.out.println(member + " [next due: $" + member.bill() + "]");
+                    }
                 }
             }
         }

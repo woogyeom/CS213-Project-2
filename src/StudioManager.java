@@ -125,15 +125,15 @@ public class StudioManager {
     private Instructor stringToInstructor(String string) {
         Instructor instructor = null;
         if (string.equalsIgnoreCase("Jennifer")) {
-            instructor = Instructor.JENNIFER;
+            instructor = Instructor.Jennifer;
         } else if (string.equalsIgnoreCase("Davis")) {
-            instructor = Instructor.DAVIS;
+            instructor = Instructor.Davis;
         } else if (string.equalsIgnoreCase("Kim")) {
-            instructor = Instructor.KIM;
+            instructor = Instructor.Kim;
         } else if (string.equalsIgnoreCase("Emma")) {
-            instructor = Instructor.EMMA;
+            instructor = Instructor.Emma;
         } else if (string.equalsIgnoreCase("Denise")) {
-            instructor = Instructor.DENISE;
+            instructor = Instructor.Denise;
         } else {
             System.out.println(string + " - instructor does not exist.");
         }
