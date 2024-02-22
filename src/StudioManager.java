@@ -1,4 +1,5 @@
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -125,15 +126,15 @@ public class StudioManager {
     private Instructor stringToInstructor(String string) {
         Instructor instructor = null;
         if (string.equalsIgnoreCase("Jennifer")) {
-            instructor = Instructor.Jennifer;
+            instructor = Instructor.JENNIFER;
         } else if (string.equalsIgnoreCase("Davis")) {
-            instructor = Instructor.Davis;
+            instructor = Instructor.DAVIS;
         } else if (string.equalsIgnoreCase("Kim")) {
-            instructor = Instructor.Kim;
+            instructor = Instructor.KIM;
         } else if (string.equalsIgnoreCase("Emma")) {
-            instructor = Instructor.Emma;
+            instructor = Instructor.EMMA;
         } else if (string.equalsIgnoreCase("Denise")) {
-            instructor = Instructor.Denise;
+            instructor = Instructor.DENISE;
         } else {
             System.out.println(string + " - instructor does not exist.");
         }
