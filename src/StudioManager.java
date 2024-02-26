@@ -1,15 +1,31 @@
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 
+/**
+ * Manages member and class schedules for a fitness studio.
+ * Handles operations like adding/removing members with different memberships,
+ * displaying class schedules with attendee information,
+ * taking attendance, and managing guest attendance.
+ *
+ * @author Woogyeom Sim
+ */
 public class StudioManager {
     private MemberList memberlist;
     private Schedule schedule;
+
+    /**
+     * Initializes the StudioManager with an empty member list and schedule.
+     */
     public StudioManager() {
         this.memberlist = new MemberList();
         this.schedule = new Schedule();
     }
+
+    /**
+     * Processes commands from a file to manage the classes and members. Supports adding,
+     * removing, and taking attendance, as well as printing the members/schedule in various orders.
+     */
     public void run() {
         try {
             File file = new File("memberList.txt");
@@ -109,6 +125,12 @@ public class StudioManager {
         return new Date(month, day, year);
     }
 
+    /**
+     * Converts a string representation of an offer into an Offer object.
+     *
+     * @param string The string representation of the offer.
+     * @return An Offer object representing the specified offer if exists, null and print otherwise.
+     */
     private Offer stringToOffer(String string) {
         Offer offer = null;
         if (string.equalsIgnoreCase("Pilates")) {
@@ -123,6 +145,12 @@ public class StudioManager {
         return offer;
     }
 
+    /**
+     * Converts a string representation of an instructor into an Instructor object.
+     *
+     * @param string The string representation of the instructor.
+     * @return An Instructor object representing the specified instructor if exists, null and print otherwise.
+     */
     private Instructor stringToInstructor(String string) {
         Instructor instructor = null;
         if (string.equalsIgnoreCase("Jennifer")) {
@@ -141,6 +169,12 @@ public class StudioManager {
         return instructor;
     }
 
+    /**
+     * Converts a string representation of a studio location into a Location object.
+     *
+     * @param string The string representation of the location.
+     * @return A Location object representing the specified studio location if exists, null and print otherwise.
+     */
     private Location stringToLocation(String string) {
         Location location = null;
         if (string.equalsIgnoreCase("Bridgewater")) {
@@ -159,6 +193,13 @@ public class StudioManager {
         return location;
     }
 
+    /**
+     * Checks if the provided dob is valid and not underage.
+     * Prints error messages for invalid or underage dobs.
+     *
+     * @param date The date to be checked.
+     * @return True if the date is valid and not underage, false otherwise.
+     */
     private boolean dateCheck(Date date) { // return true if the date is valid
         if (!date.isValid()) {
             System.out.println("DOB " + date.toString() + ": invalid calendar date!");
@@ -174,6 +215,12 @@ public class StudioManager {
         return true;
     }
 
+    /**
+     * Checks if the provided string corresponds to a valid location.
+     *
+     * @param string The string representing the location.
+     * @return The location if valid, null otherwise.
+     */
     private Location locationCheck(String string) {
         Location homeStudio = null;
         if (string.equalsIgnoreCase("Bridgewater")) {
@@ -192,6 +239,11 @@ public class StudioManager {
         return homeStudio;
     }
 
+    /**
+     * Adds a basic member to the member list.
+     *
+     * @param tokens Array of tokens containing member information.
+     */
     private void addBasic(String[] tokens) {
         if (tokens.length < 5) {
             System.out.println("Missing data tokens.");
@@ -221,6 +273,11 @@ public class StudioManager {
         System.out.println(tokens[1] + " " + tokens[2] + " added.");
     }
 
+    /**
+     * Adds a family member to the member list.
+     *
+     * @param tokens Array of tokens containing member information.
+     */
     private void addFamily(String[] tokens) {
         if (tokens.length < 5) {
             System.out.println("Missing data tokens.");
@@ -250,6 +307,11 @@ public class StudioManager {
         System.out.println(tokens[1] + " " + tokens[2] + " added.");
     }
 
+    /**
+     * Adds a premium member to the member list.
+     *
+     * @param tokens Array of tokens containing member information.
+     */
     private void addPremium(String[] tokens) {
         if (tokens.length < 5) {
             System.out.println("Missing data tokens.");
@@ -279,6 +341,11 @@ public class StudioManager {
         System.out.println(tokens[1] + " " + tokens[2] + " added.");
     }
 
+    /**
+     * Cancels the membership of a member.
+     *
+     * @param tokens Array of tokens containing member information.
+     */
     private void cancelMembership(String[] tokens) {
         if (tokens.length < 4) {
             System.out.println("Missing data tokens.");
@@ -299,6 +366,9 @@ public class StudioManager {
         }
     }
 
+    /**
+     * Displays the schedule of fitness classes.
+     */
     private void displaySchedule() {
         System.out.println("-Fitness classes-");
         for (int i = 0; i < schedule.getNumClasses(); i++) {
@@ -317,6 +387,11 @@ public class StudioManager {
         System.out.println();
     }
 
+    /**
+     * Records the attendance of a member in a fitness class.
+     *
+     * @param tokens Array of tokens containing attendance information.
+     */
     private void takeAttendance(String[] tokens) {
         if (tokens.length < 7) { // data token check
             System.out.println("Missing data tokens.");
@@ -373,11 +448,16 @@ public class StudioManager {
 
         fitnessClass.addMember(member);
         if (member instanceof  Basic) {
-            ((Basic) member).setNumClases(((Basic) member).getNumClases() + 1);
+            ((Basic) member).setNumClasses(((Basic) member).getNumClasses() + 1);
         }
         System.out.println(tokens[4] + " " + tokens[5] + " attendance recorded " + offer + " at " + studio);
     }
 
+    /**
+     * Removes a member from a fitness class.
+     *
+     * @param tokens Array of tokens containing information about the member to be removed.
+     */
     private void removeMember(String[] tokens) {
         if (tokens.length < 7) { // data token check
             System.out.println("Missing data tokens.");
@@ -398,6 +478,11 @@ public class StudioManager {
         System.out.println(tokens[4] + " " + tokens[5] + " is removed from " + fitnessClass.getInstructor() + ", " + time.toString() + ", " + fitnessClass.getStudio());
     }
 
+    /**
+     * Records the attendance of a guest in a fitness class.
+     *
+     * @param tokens Array of tokens containing guest attendance information.
+     */
     private void takeAttendanceGuest(String[] tokens) {
         if (tokens.length < 7) { // data token check
             System.out.println("Missing data tokens.");
@@ -449,6 +534,11 @@ public class StudioManager {
 
     }
 
+    /**
+     * Removes a guest from a fitness class.
+     *
+     * @param tokens Array of tokens containing information about the guest to be removed.
+     */
     private void removeGuest(String[] tokens) {
         if (tokens.length < 7) { // data token check
             System.out.println("Missing data tokens.");

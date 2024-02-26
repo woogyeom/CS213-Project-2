@@ -88,7 +88,7 @@ public class Date implements Comparable<Date> {
 
     /**
      * Checks if this date is valid.
-     * A date before 1900 is considered invalid. Also checks for valid month,
+     * Also checks for valid month,
      * day considering leap years.
      *
      * @return true if this date is valid, false otherwise.
@@ -110,6 +110,12 @@ public class Date implements Comparable<Date> {
         }
     }
 
+    /**
+     * Checks if this dob is underage.
+     * Only considers year and month.
+     *
+     * @return true if this dob is underage, false otherwise.
+     */
     public boolean isUnderage() {
         Calendar today = Calendar.getInstance();
         int currentMonth = today.get(Calendar.MONTH) + 1;
@@ -124,7 +130,11 @@ public class Date implements Comparable<Date> {
         return false;
     }
 
-
+    /**
+     * Checks if this expiry date is expired.
+     *
+     * @return true if this date is expired, false otherwise.
+     */
     public boolean isExpired() {
         Calendar today = Calendar.getInstance();
 
@@ -133,6 +143,12 @@ public class Date implements Comparable<Date> {
         return input.before(today);
     }
 
+    /**
+     * Calculates the expiry date depending on membership using today's date.
+     *
+     * @param string The membership.
+     * @return The expiry date.
+     */
     public static Date getExpirationDate(String string) {
         Calendar today = Calendar.getInstance();
         int year = today.get(Calendar.YEAR);
@@ -168,6 +184,13 @@ public class Date implements Comparable<Date> {
         return new Date(month, day, year);
     }
 
+    /**
+     * Returns the last day of the month.
+     *
+     * @param year The year.
+     * @param month The month.
+     * @return The last day of the month.
+     */
     private static int getMaxDayOfMonth(int year, int month) {
         return switch (month) {
             case 1, 3, 5, 7, 8, 10, 12 -> 31;

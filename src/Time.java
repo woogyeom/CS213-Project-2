@@ -1,3 +1,10 @@
+/**
+ * Defines the times available for fitness classes.
+ * Allows for categorization and sorting of classes by their specific time schedule.
+ * Also, prevents members taking multiple classes at the same time.
+ *
+ * @author Woogyeom Sim
+ */
 public enum Time {
     MORNING (9, 30),
     AFTERNOON (14, 0),

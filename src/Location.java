@@ -1,3 +1,9 @@
+/**
+ * Defines the studio locations available for fitness classes.
+ * Allows for categorization and sorting of classes by their studio location.
+ *
+ * @author Woogyeom Sim
+ */
 public enum Location {
     BRIDGEWATER("BRIDGEWATER", "08807", "Somerset"),
     EDISON("EDISON", "08837", "Middlesex"),

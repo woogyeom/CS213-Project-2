@@ -1,8 +1,15 @@
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
-import java.util.Calendar;
 
+/**
+ * Represents a list of members, enabling operations such as add, remove, find, sort
+ * and print members in various orders (by profile, county). It employs a dynamic array
+ * to store the members, which grows as needed to accommodate new additions.
+ * Also, it has functionality to read the text file and load members from it.
+ *
+ * @author Aravind Chundu, Woogyeom Sim
+ */
 public class MemberList {
     private static final int NOT_FOUND = -1;
     private static final int INITIAL_CAPACITY = 4;
@@ -10,11 +17,20 @@ public class MemberList {
     private Member[] members;
     private int size;
 
+    /**
+     * Constructs an empty member list with an initial capacity.
+     */
     public MemberList() {
         members = new Member[INITIAL_CAPACITY];
         size = 0;
     }
 
+    /**
+     * Finds the index of a member in the list.
+     *
+     * @param member The member to find.
+     * @return The index of the member if found, else returns NOT_FOUND.
+     */
     public int find(Member member) {
         for (int i = 0; i < size; i++) {
             if (members[i].getProfile().compareTo(member.getProfile()) == 0) {
@@ -24,6 +40,9 @@ public class MemberList {
         return NOT_FOUND;
     }
 
+    /**
+     * Increases the capacity of the member list.
+     */
     private void grow() {
         Member[] newMembers = new Member[members.length + GROWTH];
         for (int i = 0; i < size; i++) {
@@ -32,10 +51,22 @@ public class MemberList {
         members = newMembers;
     }
 
+    /**
+     * Checks if the member list contains a given member.
+     *
+     * @param member The member to check.
+     * @return True if the member is found, false otherwise.
+     */
     public boolean contains(Member member) {
         return find(member) != NOT_FOUND;
     }
 
+    /**
+     * Adds a member to the list.
+     *
+     * @param member The member to add.
+     * @return True if the member is added successfully, false if the member already exists.
+     */
     public boolean add(Member member) {
         if (contains(member)) {
             return false;
@@ -49,6 +80,12 @@ public class MemberList {
         return true;
     }
 
+    /**
+     * Removes a member from the list.
+     *
+     * @param member The member to remove.
+     * @return True if the member is removed successfully, false if the member is not found.
+     */
     public boolean remove(Member member) {
         int index = find(member);
         if (index == NOT_FOUND) {
@@ -63,6 +100,12 @@ public class MemberList {
         return true;
     }
 
+    /**
+     * Loads members from a text file and adds them to the list.
+     *
+     * @param file The file to load members from.
+     * @throws IOException If an I/O error occurs.
+     */
     public void load(File file) throws IOException {
         System.out.println("-list of members loaded-");
 
@@ -126,6 +169,13 @@ public class MemberList {
         System.out.println("-end of list-");
     }
 
+    /**
+     * Converts a string representation of a date to a Date object.
+     *
+     * @param string The string representation of the date.
+     * @return The Date object.
+     * @throws IllegalArgumentException If the string representation is invalid.
+     */
     private Date stringToDate(String string) throws IllegalArgumentException {
         String[] tokens = string.split("/");
 
@@ -136,6 +186,9 @@ public class MemberList {
         return new Date(month, day, year);
     }
 
+    /**
+     * Prints members sorted by county.
+     */
     public void printByCounty() {
         for (int i = 0; i < size - 1; i++) {
             int minIndex = i;
@@ -166,6 +219,11 @@ public class MemberList {
 
     }
 
+    /**
+     * Prints members sorted by member profile.
+     *
+     * @param sCommand Indicates if the "S" command is used for indentation.
+     */
     public void printByMember(boolean sCommand) { // We need this sCommand boolean otherwise we need one more method
         for (int i = 0; i < size - 1; i++) {
             int minIndex = i;
@@ -194,14 +252,14 @@ public class MemberList {
         }
     }
 
+    /**
+     * Prints member fees.
+     */
     public void printFees() {
-        String todayDate = getTodayDate();
-        Date today = stringToDate(todayDate);
-
         for (Member member : members) {
 
             if (member != null) {
-                boolean isExpired = expired(member, today);
+                boolean isExpired = expired(member);
 
                 if (member instanceof Basic) {
                     System.out.println(member + " [next due: $" + member.bill() + "]");
@@ -228,26 +286,40 @@ public class MemberList {
         }
     }
 
-    private String getTodayDate() {
-        Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-        return (month+1) + "/" + day + "/" + year;
+    /**
+     * Checks if a member's membership has expired.
+     *
+     * @param member The member to check.
+     * @return True if the membership has expired, false otherwise.
+     */
+    private boolean expired(Member member) {
+        return member.getExpire().isExpired();
     }
 
-    private boolean expired(Member member, Date today) {
-        return member.getExpire().compareTo(today) < 0;
-    }
-
+    /**
+     * Gets the member at the specified index.
+     *
+     * @param i The index of the member.
+     * @return The member at the specified index.
+     */
     public Member getMember(int i) {
         return members[i];
     }
 
+    /**
+     * Gets the size of the member list.
+     *
+     * @return The size of the member list.
+     */
     public int getSize() {
         return size;
     }
 
+    /**
+     * Checks if the member list is empty.
+     *
+     * @return True if the member list is empty, false otherwise.
+     */
     public boolean isEmpty() {
         return size == 0;
     }
