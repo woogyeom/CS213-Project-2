@@ -4,14 +4,14 @@ This program provides a command-line system to manage memberships, fitness class
 
 Key Features
 1. **Membership Management**:
-- Add, edit, or remove memberships (Basic, Family, Premium).
-- Automatically calculate membership expiration and fees.
+  - Add, edit, or remove memberships (Basic, Family, Premium).
+  - Automatically calculate membership expiration and fees.
 2. **Class Scheduling**:
-- Register members and guests for classes (Pilates, Spinning, Cardio).
-- Manage attendance with membership restrictions.
+  - Register members and guests for classes (Pilates, Spinning, Cardio).
+  - Manage attendance with membership restrictions.
 3. **Data Display**:
-- View member lists sorted by name, county, or membership fees.
-- Display class schedules with current attendees.
+  - View member lists sorted by name, county, or membership fees.
+  - Display class schedules with current attendees.
 4. **Administrative Tools**:
-- Import/export member and class data from text files.
-- Generate billing and attendance reports.
+  - Import/export member and class data from text files.
+  - Generate billing and attendance reports.
